@@ -1,9 +1,11 @@
+use pom::char_class::*;
 use pom::parser::*;
 use pom::Parser;
 
 use crate::document::{DocumentTemplate, Partial};
 
-/// A `StringLiteral` is:
+/// A `StringLiteral` parser combinator is responsible for parsing the following
+/// fragment:
 ///
 /// ```ebnf
 /// <StringLiteral> ::= <StringLiteralCharacter>+
@@ -29,6 +31,26 @@ pub(crate) fn string_literal() -> Parser<u8, Partial> {
     string
         .convert(String::from_utf8)
         .map(|s| Partial::StringLiteral(s))
+}
+
+/// The `tag` parser combinator is responsible for parsing a `Tag(identifier)`
+/// which is delimited between `{{ tag_id }}`.
+///
+/// ```enbf
+/// <Tag> ::= "{{" <TagId> "}}"
+/// <TagId> ::= [a-zA-Z][a-zA-Z0-9]*
+/// ```
+pub(crate) fn tag() -> Parser<u8, Partial> {
+    let tag_left_delimiter = seq(b"{{").discard();
+    let tag_right_delimiter = seq(b"}}").discard();
+
+    let tag_identifier = is_a(|c| alpha(c)) + is_a(|c| alphanum(c)).repeat(0..);
+
+    let tag = tag_left_delimiter + tag_identifier + tag_right_delimiter;
+
+    tag.collect()
+        .convert(std::str::from_utf8)
+        .map(|s| Partial::Tag(s.to_string()))
 }
 
 #[cfg(test)]
@@ -112,5 +134,12 @@ mod tests {
         assert_eq!("\\", parsed_literal);
 
         Ok(())
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_empty_tag() {
+        let raw = b"{{}}";
+        tag().parse(raw).unwrap();
     }
 }
