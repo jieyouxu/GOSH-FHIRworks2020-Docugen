@@ -16,3 +16,13 @@ tool.
 
 Run the `dotnet-azure-fhir-web-api` and bind it to `https://localhost:5001` so
 the front-end tooling can utilize this intermediate endpoint.
+
+## Configuration
+
+To configure the tooling, copy the example `config.example.toml` configuration
+file.
+
+```bash
+$ cd gosh_fhirworks2020_docugen
+$ cp config.example.toml config.toml
+```
