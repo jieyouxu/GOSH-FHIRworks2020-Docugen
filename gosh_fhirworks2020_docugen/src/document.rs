@@ -17,6 +17,10 @@ impl DocumentTemplate {
             partials: partials.to_vec(),
         }
     }
+
+    fn add_partial(&mut self, partial: &Partial) {
+        self.partials.push(partial.clone());
+    }
 }
 
 pub(crate) type Identifier = String;

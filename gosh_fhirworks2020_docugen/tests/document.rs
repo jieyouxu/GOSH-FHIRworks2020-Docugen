@@ -1,5 +1,4 @@
-use docugen::document;
-use gosh_fhirworks2020_docugen as docugen;
+use docugen::document::{self, DocumentTemplate};
 
 #[test]
 fn test_string_to_template() -> Result<(), String> {
@@ -15,5 +14,5 @@ Sincerely,
 {{ hospital_name }}
 "#;
 
-    let template = docugen::document::DocumentTemplate;
+    unimplemented!()
 }
