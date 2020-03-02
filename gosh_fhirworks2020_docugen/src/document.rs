@@ -2,7 +2,7 @@
 /// template. A template consists of a list of `Partial`s.
 #[derive(Debug, PartialEq)]
 pub(crate) struct DocumentTemplate {
-    pub(crate) partials: Vec<Partial>;
+    pub(crate) partials: Vec<Partial>,
 }
 
 pub(crate) type Identifier = String;
@@ -10,8 +10,8 @@ pub(crate) type Identifier = String;
 /// Each `Partial` is either a UTF-8 `StringLiteral`, or a `Tag`.
 #[derive(Debug, PartialEq)]
 pub(crate) enum Partial {
-    pub(crate) StringLiteral(String),
-    pub(crate) Tag(Identifier)
+    StringLiteral(String),
+    Tag(Identifier),
 }
 
 /// A `FilledDocument` is generated from a `DocumentTemplate` with the required
@@ -20,36 +20,36 @@ pub(crate) struct FilledDocument(String);
 
 /// A `TagPair` is an association between the tag name `key` and the `value`
 /// that should be used to fill its place.
+#[derive(Debug, PartialEq)]
 pub(crate) struct TagPair {
     pub(crate) key: String,
     pub(crate) value: String,
 }
 
 pub(crate) enum TemplateError {
-    MissingRequiredTagValue(Identifier)
+    MissingRequiredTagValue(Identifier),
 }
 
 impl DocumentTemplate {
     fn saturate(&self, tag_pairs: &[TagPair]) -> Result<FilledDocument, TemplateError> {
-        let result = String::new();
+        let mut content = String::new();
 
         for partial in &self.partials[..] {
             match partial {
-                StringLiteral(s) => result.push_str(s),
-                Tag(id) => {
-                    let tag_value = match tag_pairs.iter().find(|t| t.key == id) {
-                        Some(v) => v,
+                Partial::StringLiteral(s) => content.push_str(s),
+                Partial::Tag(id) => {
+                    let tag_value = match tag_pairs.iter().find(|&t| &t.key == id) {
+                        Some(TagPair { value, .. }) => value,
                         None => {
-                            return TemplateError(id);
+                            return Err(TemplateError::MissingRequiredTagValue(id.to_string()));
                         }
                     };
 
-                    result.push_str(tag_value);
+                    content.push_str(tag_value);
                 }
             }
         }
 
-        Ok(result)
+        Ok(FilledDocument(content))
     }
 }
-

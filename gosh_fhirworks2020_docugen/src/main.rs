@@ -1,5 +1,4 @@
 mod config;
-mod parser;
 mod document;
 
 use config::DocugenConfig;
