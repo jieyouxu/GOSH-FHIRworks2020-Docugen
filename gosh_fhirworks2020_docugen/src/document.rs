@@ -1,33 +1,33 @@
 /// A `DocumentTemplate` mimics a [mustache](https://mustache.github.io/)
 /// template. A template consists of a list of `Partial`s.
 #[derive(Debug, PartialEq)]
-pub(crate) struct DocumentTemplate {
-    pub(crate) partials: Vec<Partial>,
+pub struct DocumentTemplate {
+    pub partials: Vec<Partial>,
 }
 
 impl DocumentTemplate {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             partials: Vec::new(),
         }
     }
 
-    fn with_partials(partials: &[Partial]) -> Self {
+    pub fn with_partials(partials: &[Partial]) -> Self {
         Self {
             partials: partials.to_vec(),
         }
     }
 
-    fn add_partial(&mut self, partial: &Partial) {
+    pub fn add_partial(&mut self, partial: &Partial) {
         self.partials.push(partial.clone());
     }
 }
 
-pub(crate) type Identifier = String;
+pub type Identifier = String;
 
 /// Each `Partial` is either a UTF-8 `StringLiteral`, or a `Tag`.
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) enum Partial {
+pub enum Partial {
     StringLiteral(String),
     Tag(Identifier),
 }
@@ -35,7 +35,7 @@ pub(crate) enum Partial {
 /// A `FilledDocument` is generated from a `DocumentTemplate` with the required
 /// `Tag`s filled in.
 #[derive(Debug, PartialEq)]
-pub(crate) struct FilledDocument(String);
+pub struct FilledDocument(String);
 
 impl FilledDocument {
     fn document<'a>(&'a self) -> &'a str {
@@ -46,14 +46,14 @@ impl FilledDocument {
 /// A `TagPair` is an association between the tag name `key` and the `value`
 /// that should be used to fill its place.
 #[derive(Debug, PartialEq)]
-pub(crate) struct TagPair {
-    pub(crate) key: String,
-    pub(crate) value: String,
+pub struct TagPair {
+    pub key: String,
+    pub value: String,
 }
 
 /// Cause of error when trying to fill a `DocumentTemplate`.
 #[derive(Debug, PartialEq)]
-pub(crate) enum TemplateError {
+pub enum TemplateError {
     MissingRequiredTagValue(Identifier),
     NonExhaustiveTags(Vec<Identifier>),
 }
