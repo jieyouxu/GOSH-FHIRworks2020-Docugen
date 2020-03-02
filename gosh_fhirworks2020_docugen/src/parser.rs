@@ -177,4 +177,11 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    #[should_panic]
+    fn test_malformed_tag() {
+        let raw = b"{{ \t separated identifiers illegal }}";
+        tag().parse(raw).unwrap();
+    }
 }
