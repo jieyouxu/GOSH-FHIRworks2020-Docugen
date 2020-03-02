@@ -2,7 +2,7 @@ use pom::char_class::*;
 use pom::parser::*;
 use pom::Parser;
 
-use crate::document::{DocumentTemplate, Partial};
+use crate::document::{Partial};
 
 /// A `StringLiteral` parser combinator is responsible for parsing the following
 /// fragment:
