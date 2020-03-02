@@ -1,3 +1,13 @@
+mod config;
+
+use config::DocugenConfig;
+use lazy_static::lazy_static;
+
+lazy_static! {
+    static ref CONFIG: DocugenConfig = config::read_config_from_path("config.toml")
+        .expect("Configuration file non-existent or invalid; check log output for details");
+}
+
 fn main() {
-    println!("Hello, world!");
+    println!("Config given: {:?}", &*CONFIG);
 }

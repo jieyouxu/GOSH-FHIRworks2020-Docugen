@@ -1,0 +1,7 @@
+### Config File ###
+
+# User-supplied config file
+config.toml
+
+# Generated build
+target/
