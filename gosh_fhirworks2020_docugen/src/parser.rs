@@ -168,4 +168,13 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_tag_whitespace() -> Result<(), String> {
+        let raw = b"{{ \t xxxx   }}";
+        let expected_tag = Partial::Tag("xxxx".to_string());
+        assert_eq!(expected_tag, tag().parse(raw).unwrap());
+
+        Ok(())
+    }
 }
