@@ -193,4 +193,33 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_web_api_config_deserialization() -> Result<(), String> {
+        let web_api_config = WebApiConfig {
+            ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
+            port: 5001,
+            use_https: true,
+        };
+
+        let deserialized = toml::to_string(&web_api_config).map_err(|e| e.to_string())?;
+
+        let expected_str = r#"
+            ip_address = "127.0.0.1"
+            port = 5001
+            use_https = true
+        "#;
+
+        let expected_str = expected_str
+            .split("\n")
+            .skip(1) // skip newline after raw string literal start
+            .map(|s| s.trim())
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>()
+            .join("\n");
+
+        assert_eq!(expected_str, deserialized);
+
+        Ok(())
+    }
 }
