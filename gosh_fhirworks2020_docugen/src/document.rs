@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    fn non_existent_tag() {
+    fn test_non_existent_tag() {
         let template = DocumentTemplate::with_partials(&vec![Partial::Tag(
             "name".to_string(),
         )]);
@@ -138,5 +138,40 @@ mod tests {
                 value: "___".to_string(),
             }])
             .unwrap();
+    }
+
+    #[test]
+    fn test_multiple_tags() -> Result<(), String> {
+        let template = DocumentTemplate::with_partials(&vec![
+            Partial::StringLiteral("<S1>".to_string()),
+            Partial::Tag("T1".to_string()),
+            Partial::StringLiteral("<S2>".to_string()),
+            Partial::Tag("T2".to_string()),
+            Partial::Tag("T1".to_string()),
+            Partial::Tag("T3".to_string()),
+        ]);
+
+        let filled_document = template
+            .saturate(&vec![
+                TagPair {
+                    key: "T1".to_string(),
+                    value: "T1V".to_string(),
+                },
+                TagPair {
+                    key: "T2".to_string(),
+                    value: "T2V".to_string(),
+                },
+                TagPair {
+                    key: "T3".to_string(),
+                    value: "T3V".to_string(),
+                },
+            ])
+            .unwrap();
+
+        let expected_string = "<S1>T1V<S2>T2VT1VT3V".to_string();
+
+        assert_eq!(expected_string, filled_document.document());
+
+        Ok(())
     }
 }
