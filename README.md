@@ -1,7 +1,6 @@
 # GOSH-FHIRworks2020-Docugen
 
 [![codecov](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen/branch/master/graph/badge.svg)](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen)
-[![Coverage Status](https://coveralls.io/repos/github/jieyouxu/GOSH-FHIRworks2020-Docugen/badge.svg?branch=master)](https://coveralls.io/github/jieyouxu/GOSH-FHIRworks2020-Docugen?branch=master)
 
 A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
 
