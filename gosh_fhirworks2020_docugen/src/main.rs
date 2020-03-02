@@ -1,5 +1,6 @@
 mod config;
 mod document;
+mod parser;
 
 use config::DocugenConfig;
 use lazy_static::lazy_static;

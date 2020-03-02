@@ -14,7 +14,7 @@ serde_json = "1.0.48"
 log = "0.4.8"
 env_logger = "0.7.1"
 reqwest = "0.10.3"
-nom = "5.1.1"
+pom = "3.1.0"
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
