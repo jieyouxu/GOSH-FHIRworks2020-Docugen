@@ -46,11 +46,33 @@ pub(crate) fn tag() -> Parser<u8, Partial> {
 
     let tag_identifier = is_a(|c| alpha(c)) + is_a(|c| alphanum(c)).repeat(0..);
 
-    let tag = tag_left_delimiter + tag_identifier + tag_right_delimiter;
+    let tag = tag_left_delimiter * skip_whitespace() + tag_identifier
+        - skip_whitespace()
+        + tag_right_delimiter;
 
-    tag.collect()
-        .convert(std::str::from_utf8)
-        .map(|s| Partial::Tag(s.to_string()))
+    tag.convert(|(((), (head, tail)), ())| {
+        let (head, tail) = (
+            std::str::from_utf8(std::slice::from_ref(&head)),
+            std::str::from_utf8(&tail[..]),
+        );
+        if let (Ok(head), Ok(tail)) = (&head, &tail) {
+            let mut id = String::new();
+            id.push_str(head);
+            id.push_str(tail);
+            Ok(id)
+        } else {
+            Err(pom::Error::Custom {
+                message: "failed to parse".to_string(),
+                position: 0,
+                inner: None,
+            })
+        }
+    })
+    .map(|s| Partial::Tag(s.to_string()))
+}
+
+fn skip_whitespace() -> Parser<u8, ()> {
+    one_of(b" \t\r\n").repeat(0..).discard()
 }
 
 #[cfg(test)]
@@ -59,21 +81,15 @@ mod tests {
 
     #[test]
     fn test_ascii_string_literal() -> Result<(), String> {
-        let raw_string_literal = br#"HELLO_WORLD"#;
-        let parsed_string_literal =
-            match string_literal().parse(raw_string_literal) {
-                Ok(Partial::StringLiteral(s)) => s,
-                Err(e) => {
-                    return Err(e.to_string());
-                }
-                _ => unreachable!(),
-            };
+        let raw = b"HELLO_WORLD";
+        let expected_string_literal =
+            Partial::StringLiteral("HELLO_WORLD".to_string());
 
         assert_eq!(
-            std::str::from_utf8(raw_string_literal)
-                .map_err(|e| e.to_string())?,
-            parsed_string_literal
+            expected_string_literal,
+            string_literal().parse(raw).unwrap()
         );
+
         Ok(())
     }
 
@@ -85,14 +101,16 @@ mod tests {
     }
 
     #[test]
-    fn test_escaped_left_brace() {
+    fn test_escaped_left_brace() -> Result<(), String> {
         let raw = b"\\{";
-        match string_literal().parse(raw).unwrap() {
-            Partial::StringLiteral(s) => {
-                assert_eq!("{", &s);
-            }
-            _ => panic!("unexpected branch"),
-        }
+        let expected_string_literal = Partial::StringLiteral("{".to_string());
+
+        assert_eq!(
+            expected_string_literal,
+            string_literal().parse(raw).unwrap()
+        );
+
+        Ok(())
     }
 
     #[test]
@@ -103,14 +121,16 @@ mod tests {
     }
 
     #[test]
-    fn test_escaped_right_brace() {
+    fn test_escaped_right_brace() -> Result<(), String> {
         let raw = b"\\}";
-        match string_literal().parse(raw).unwrap() {
-            Partial::StringLiteral(s) => {
-                assert_eq!("}", &s);
-            }
-            _ => panic!("unexpected branch"),
-        }
+        let expected_string_literal = Partial::StringLiteral("}".to_string());
+
+        assert_eq!(
+            expected_string_literal,
+            string_literal().parse(raw).unwrap()
+        );
+
+        Ok(())
     }
 
     #[test]
@@ -123,15 +143,12 @@ mod tests {
     #[test]
     fn test_escaped_backslash() -> Result<(), String> {
         let raw = b"\\\\";
-        let parsed_literal = string_literal().parse(raw).unwrap();
-        let parsed_literal = match parsed_literal {
-            Partial::StringLiteral(s) => s,
-            _ => {
-                return Err("unexpected branch".to_string());
-            }
-        };
+        let expected_string_literal = Partial::StringLiteral("\\".to_string());
 
-        assert_eq!("\\", parsed_literal);
+        assert_eq!(
+            expected_string_literal,
+            string_literal().parse(raw).unwrap()
+        );
 
         Ok(())
     }
@@ -141,5 +158,14 @@ mod tests {
     fn test_empty_tag() {
         let raw = b"{{}}";
         tag().parse(raw).unwrap();
+    }
+
+    #[test]
+    fn test_tag() -> Result<(), String> {
+        let raw = b"{{abc}}";
+        let expected_tag = Partial::Tag("abc".to_string());
+        assert_eq!(expected_tag, tag().parse(raw).unwrap());
+
+        Ok(())
     }
 }
