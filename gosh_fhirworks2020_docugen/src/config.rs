@@ -116,8 +116,8 @@ pub(crate) fn read_config_from_path(path: &str) -> ConfigResult<DocugenConfig> {
 }
 
 fn read_from_file(path: &path::Path) -> ConfigResult<String> {
-    let config_content =
-        fs::read_to_string(path).map_err(|e| ConfigError::IOError(e.to_string()))?;
+    let config_content = fs::read_to_string(path)
+        .map_err(|e| ConfigError::IOError(e.to_string()))?;
 
     info!("Config read:");
     info!("{:#?}", config_content);
@@ -152,7 +152,8 @@ mod tests {
 
         assert_eq!(
             expected_logging_config,
-            toml::from_str::<LoggingConfig>(raw_logging_config).map_err(|e| e.to_string())?
+            toml::from_str::<LoggingConfig>(raw_logging_config)
+                .map_err(|e| e.to_string())?
         );
 
         Ok(())
@@ -171,7 +172,8 @@ mod tests {
             log_level: LogLevel::Trace,
         };
 
-        let deserialized = &toml::to_string(&logging_config).map_err(|e| e.to_string())?;
+        let deserialized =
+            &toml::to_string(&logging_config).map_err(|e| e.to_string())?;
 
         let expected_str = "log_level = \"trace\"\n";
 
@@ -198,7 +200,8 @@ mod tests {
 
         assert_eq!(
             expected_web_api_config,
-            toml::from_str::<WebApiConfig>(raw_web_api_config).map_err(|e| e.to_string())?
+            toml::from_str::<WebApiConfig>(raw_web_api_config)
+                .map_err(|e| e.to_string())?
         );
 
         Ok(())
@@ -213,7 +216,8 @@ mod tests {
             use_https: true,
         };
 
-        let deserialized = toml::to_string(&web_api_config).map_err(|e| e.to_string())?;
+        let deserialized =
+            toml::to_string(&web_api_config).map_err(|e| e.to_string())?;
 
         let expected_str = r#"
             ip_address = "127.0.0.1"
@@ -262,7 +266,8 @@ mod tests {
 
         assert_eq!(
             expected_combined_config,
-            toml::from_str::<DocugenConfig>(raw_combined_config).map_err(|e| e.to_string())?
+            toml::from_str::<DocugenConfig>(raw_combined_config)
+                .map_err(|e| e.to_string())?
         );
 
         Ok(())

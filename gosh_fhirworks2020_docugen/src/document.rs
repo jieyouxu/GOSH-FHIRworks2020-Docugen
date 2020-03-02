@@ -31,19 +31,27 @@ pub(crate) enum TemplateError {
 }
 
 impl DocumentTemplate {
-    fn saturate(&self, tag_pairs: &[TagPair]) -> Result<FilledDocument, TemplateError> {
+    fn saturate(
+        &self,
+        tag_pairs: &[TagPair],
+    ) -> Result<FilledDocument, TemplateError> {
         let mut content = String::new();
 
         for partial in &self.partials[..] {
             match partial {
                 Partial::StringLiteral(s) => content.push_str(s),
                 Partial::Tag(id) => {
-                    let tag_value = match tag_pairs.iter().find(|&t| &t.key == id) {
-                        Some(TagPair { value, .. }) => value,
-                        None => {
-                            return Err(TemplateError::MissingRequiredTagValue(id.to_string()));
-                        }
-                    };
+                    let tag_value =
+                        match tag_pairs.iter().find(|&t| &t.key == id) {
+                            Some(TagPair { value, .. }) => value,
+                            None => {
+                                return Err(
+                                    TemplateError::MissingRequiredTagValue(
+                                        id.to_string(),
+                                    ),
+                                );
+                            }
+                        };
 
                     content.push_str(tag_value);
                 }
