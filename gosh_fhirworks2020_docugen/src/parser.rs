@@ -2,7 +2,7 @@ use pom::char_class::*;
 use pom::parser::*;
 use pom::Parser;
 
-use crate::document::Partial;
+use crate::document::{DocumentTemplate, Partial};
 
 /// A `StringLiteral` parser combinator is responsible for parsing the following
 /// fragment:
@@ -22,7 +22,7 @@ use crate::document::Partial;
 ///
 /// <UnescapedCharacter> ::= [^\\{}]
 /// ```
-pub(crate) fn string_literal() -> Parser<u8, Partial> {
+pub fn string_literal() -> Parser<u8, Partial> {
     let special_char = sym(b'\\').map(|_| b'\\')
         | sym(b'{').map(|_| b'{')
         | sym(b'}').map(|_| b'}');
@@ -40,7 +40,7 @@ pub(crate) fn string_literal() -> Parser<u8, Partial> {
 /// <Tag> ::= "{{" <TagId> "}}"
 /// <TagId> ::= [a-zA-Z][a-zA-Z0-9]*
 /// ```
-pub(crate) fn tag() -> Parser<u8, Partial> {
+pub fn tag() -> Parser<u8, Partial> {
     let tag_left_delimiter = seq(b"{{").discard();
     let tag_right_delimiter = seq(b"}}").discard();
 
@@ -73,6 +73,17 @@ pub(crate) fn tag() -> Parser<u8, Partial> {
 
 fn skip_whitespace() -> Parser<u8, ()> {
     one_of(b" \t\r\n").repeat(0..).discard()
+}
+
+/// A `Partial` is either a `StringLiteral` or a `Tag`.
+pub fn partial() -> Parser<u8, Partial> {
+    string_literal() | tag()
+}
+
+/// A `DocumentTemplate` consists of a list of `Partial`s.
+pub fn document_template() -> Parser<u8, DocumentTemplate> {
+    let partials = skip_whitespace() * partial().repeat(0..) - end();
+    partials.map(|ps| DocumentTemplate::with_partials(&ps))
 }
 
 #[cfg(test)]
