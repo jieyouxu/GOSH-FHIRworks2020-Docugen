@@ -63,10 +63,32 @@ mod tests {
     }
 
     #[test]
+    fn test_escaped_left_brace() {
+        let raw = b"\\{";
+        match string_literal().parse(raw).unwrap() {
+            Partial::StringLiteral(s) => {
+                assert_eq!("{", &s);
+            }
+            _ => panic!("unexpected branch"),
+        }
+    }
+
+    #[test]
     #[should_panic]
     fn test_unescaped_right_brace() {
         let raw = b"}";
         string_literal().parse(raw).unwrap();
+    }
+
+    #[test]
+    fn test_escaped_right_brace() {
+        let raw = b"\\}";
+        match string_literal().parse(raw).unwrap() {
+            Partial::StringLiteral(s) => {
+                assert_eq!("}", &s);
+            }
+            _ => panic!("unexpected branch"),
+        }
     }
 
     #[test]
