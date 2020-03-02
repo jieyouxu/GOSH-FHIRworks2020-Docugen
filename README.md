@@ -1,12 +1,14 @@
 # GOSH-FHIRworks2020-Docugen
 
 [![codecov](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen/branch/master/graph/badge.svg)](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen)
+![GitHub language count](https://img.shields.io/github/languages/count/jieyouxu/GOSH-FHIRworks2020-Docugen)
+![GitHub top language](https://img.shields.io/github/languages/top/jieyouxu/GOSH-FHIRworks2020-Docugen?color=orange)
 
 A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
 
 ## Submodules
 
-```
+```text
 .
 ├── FHIRworks_2020                    // (intermediate web API submodule)
 └── gosh_fhirworks2020_docugen        // (this tool)
@@ -25,6 +27,6 @@ To configure the tooling, copy the example `config.example.toml` configuration
 file.
 
 ```bash
-$ cd gosh_fhirworks2020_docugen
-$ cp config.example.toml config.toml
+cd gosh_fhirworks2020_docugen
+cp config.example.toml config.toml
 ```
