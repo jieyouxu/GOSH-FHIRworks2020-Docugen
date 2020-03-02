@@ -1,5 +1,6 @@
 # GOSH-FHIRworks2020-Docugen
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/42a7c1f4d5314c7f9b44bca857292ac6)](https://app.codacy.com/manual/jieyouxu/GOSH-FHIRworks2020-Docugen?utm_source=github.com&utm_medium=referral&utm_content=jieyouxu/GOSH-FHIRworks2020-Docugen&utm_campaign=Badge_Grade_Dashboard)
 [![codecov](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen/branch/master/graph/badge.svg)](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen)
 
 A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
