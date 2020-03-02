@@ -1,7 +1,5 @@
 language: rust
 
-sudo: required
-
 rust:
   - stable
   - beta
@@ -10,6 +8,9 @@ rust:
 matrix:
   allow_failures:
     - rust: nightly
+
+before_install:
+  - cd gosh_fhirworks2020_docugen
 
 addons:
   apt:
@@ -26,8 +27,8 @@ after_success: |
   wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
   tar xzf master.tar.gz &&
   cd kcov-master &&
-  mkdir gosh_fhirworks2020_docugen/build &&
-  cd gosh_fhirworks2020_docugen/build &&
+  mkdir build &&
+  cd build &&
   cmake .. &&
   make &&
   make install DESTDIR=../../kcov-build &&
