@@ -1,6 +1,6 @@
 use log::{error, info};
 use serde::{Deserialize, Serialize};
-use std::fs::{self};
+use std::fs;
 use std::net::{IpAddr, Ipv4Addr};
 use std::path;
 use toml;
