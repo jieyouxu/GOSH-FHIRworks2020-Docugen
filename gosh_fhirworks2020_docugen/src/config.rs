@@ -7,7 +7,7 @@ use toml;
 
 /// Configuration for the `Docugen` tool.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
-#[serde(default, deny_unknown_fields)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct DocugenConfig {
     pub(crate) web_api: WebApiConfig,
     pub(crate) logging: LoggingConfig,
@@ -24,7 +24,7 @@ impl Default for DocugenConfig {
 
 /// Configuration for the intermediate Web API.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
-#[serde(default, deny_unknown_fields)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct WebApiConfig {
     pub(crate) ip_address: IpAddr,
     pub(crate) port: u16,
@@ -43,7 +43,7 @@ impl Default for WebApiConfig {
 
 /// Logging configuration.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
-#[serde(default, deny_unknown_fields)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct LoggingConfig {
     pub(crate) log_level: LogLevel,
 }
@@ -58,6 +58,7 @@ impl Default for LoggingConfig {
 
 /// Logging level.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub(crate) enum LogLevel {
     #[serde(rename = "trace")]
     Trace,
@@ -120,7 +121,7 @@ fn parse_as_toml(raw: &str) -> ConfigResult<DocugenConfig> {
     toml::from_str::<DocugenConfig>(raw).map_err(|e| {
         error!("Failed to parse config as TOML. Check your configuration!");
         error!("Provided raw config:");
-        error!("{:#?}", raw);
+        error!("\n{}", raw);
         error!("Error cause: {:#?}", &e);
         ConfigError::IllFormed(e.to_string())
     })
@@ -133,7 +134,7 @@ mod tests {
 
     #[test]
     fn test_logging_config_serialization() -> Result<(), String> {
-        let raw_logging_config: &str = r#"
+        let raw_logging_config = r#"
             log_level = "debug"
         "#;
 
@@ -147,6 +148,13 @@ mod tests {
         );
 
         Ok(())
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_logging_config_serialization_failed() {
+        let invalid_raw_config = "";
+        toml::from_str::<LoggingConfig>(invalid_raw_config).unwrap();
     }
 
     #[test]
@@ -166,6 +174,23 @@ mod tests {
 
     #[test]
     fn test_web_api_config_serialization() -> Result<(), String> {
-        unimplemented!()
+        let raw_web_api_config = r#"
+            ip_address = "127.0.0.1"
+            port = 5001
+            use_https = true
+        "#;
+
+        let expected_web_api_config = WebApiConfig {
+            ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
+            port: 5001,
+            use_https: true,
+        };
+
+        assert_eq!(
+            expected_web_api_config,
+            toml::from_str::<WebApiConfig>(raw_web_api_config).map_err(|e| e.to_string())?
+        );
+
+        Ok(())
     }
 }
