@@ -8,9 +8,9 @@ use toml;
 /// Configuration for the `Docugen` tool.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) struct DocugenConfig {
-    pub(crate) web_api: WebApiConfig,
-    pub(crate) logging: LoggingConfig,
+pub struct DocugenConfig {
+    pub web_api: WebApiConfig,
+    pub logging: LoggingConfig,
 }
 
 impl Default for DocugenConfig {
@@ -25,17 +25,17 @@ impl Default for DocugenConfig {
 /// Configuration for the intermediate Web API.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) struct WebApiConfig {
-    pub(crate) ip_address: IpAddr,
-    pub(crate) port: u16,
+pub struct WebApiConfig {
+    pub ip_address: IpAddr,
+    pub port: u16,
     /// The part of the url after `{ip_address}:{port}`.
     ///
     /// # Example
     ///
     /// The `api_endpoint` of `https://localhost:5001/api/Patient` is
     /// `/api/Patient`.
-    pub(crate) api_endpoint: String,
-    pub(crate) use_https: bool,
+    pub api_endpoint: String,
+    pub use_https: bool,
 }
 
 impl Default for WebApiConfig {
@@ -52,8 +52,8 @@ impl Default for WebApiConfig {
 /// Logging configuration.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) struct LoggingConfig {
-    pub(crate) log_level: LogLevel,
+pub struct LoggingConfig {
+    pub log_level: LogLevel,
 }
 
 impl Default for LoggingConfig {
@@ -67,7 +67,7 @@ impl Default for LoggingConfig {
 /// Logging level.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) enum LogLevel {
+pub enum LogLevel {
     #[serde(rename = "trace")]
     Trace,
     #[serde(rename = "debug")]
@@ -83,17 +83,17 @@ pub(crate) enum LogLevel {
 }
 
 #[derive(Debug, PartialEq)]
-pub(crate) enum ConfigError {
+pub enum ConfigError {
     IOError(String),
     IllFormed(String),
 }
 
 /// A type alias over possible `ConfigError`s that can be produced when trying
 /// to read or parse a configuration file into the `DocugenConfig` struct.
-pub(crate) type ConfigResult<T> = Result<T, ConfigError>;
+pub type ConfigResult<T> = Result<T, ConfigError>;
 
 /// Attempt to read configuration from a file of the given `path`.
-pub(crate) fn read_config_from_path(path: &str) -> ConfigResult<DocugenConfig> {
+pub fn read_config_from_path(path: &str) -> ConfigResult<DocugenConfig> {
     info!("Trying to read configuration from path: \"{}\"", path);
     let path = path::Path::new(path);
 

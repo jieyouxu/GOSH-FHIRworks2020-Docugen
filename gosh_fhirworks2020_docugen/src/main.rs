@@ -1,9 +1,5 @@
-mod config;
-mod document;
-mod parser;
-
-use config::DocugenConfig;
 use lazy_static::lazy_static;
+use libdocugen::config::{self, DocugenConfig};
 
 lazy_static! {
     static ref CONFIG: DocugenConfig = config::read_config_from_path("config.toml")
