@@ -1,5 +1,7 @@
 # GOSH-FHIRworks2020-Docugen
 
+[![codecov](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen/branch/master/graph/badge.svg)](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen)
+
 A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
 
 ## Submodules
