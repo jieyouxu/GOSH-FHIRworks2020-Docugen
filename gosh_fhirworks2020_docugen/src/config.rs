@@ -222,4 +222,35 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_combined() -> Result<(), String> {
+        let raw_combined_config = r#"
+            [web_api]
+            ip_address = "127.0.0.1"
+            port = 5001
+            use_https = true
+
+            [logging]
+            log_level = "debug"
+        "#;
+
+        let expected_combined_config = DocugenConfig {
+            web_api: WebApiConfig {
+                ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
+                port: 5001,
+                use_https: true,
+            },
+            logging: LoggingConfig {
+                log_level: LogLevel::Debug,
+            },
+        };
+
+        assert_eq!(
+            expected_combined_config,
+            toml::from_str::<DocugenConfig>(raw_combined_config).map_err(|e| e.to_string())?
+        );
+
+        Ok(())
+    }
 }
