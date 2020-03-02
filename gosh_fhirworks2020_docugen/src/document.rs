@@ -124,4 +124,19 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    #[should_panic]
+    fn non_existent_tag() {
+        let template = DocumentTemplate::with_partials(&vec![Partial::Tag(
+            "name".to_string(),
+        )]);
+
+        template
+            .saturate(&vec![TagPair {
+                key: "Hello".to_string(),
+                value: "___".to_string(),
+            }])
+            .unwrap();
+    }
 }
