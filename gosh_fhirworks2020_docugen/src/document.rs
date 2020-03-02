@@ -30,7 +30,14 @@ pub(crate) enum Partial {
 
 /// A `FilledDocument` is generated from a `DocumentTemplate` with the required
 /// `Tag`s filled in.
+#[derive(Debug, PartialEq)]
 pub(crate) struct FilledDocument(String);
+
+impl FilledDocument {
+    fn document<'a>(&'a self) -> &'a str {
+        &self.0
+    }
+}
 
 /// A `TagPair` is an association between the tag name `key` and the `value`
 /// that should be used to fill its place.
@@ -41,6 +48,7 @@ pub(crate) struct TagPair {
 }
 
 /// Cause of error when trying to fill a `DocumentTemplate`.
+#[derive(Debug, PartialEq)]
 pub(crate) enum TemplateError {
     MissingRequiredTagValue(Identifier),
     NonExhaustiveTags(Vec<Identifier>),
@@ -92,6 +100,28 @@ mod tests {
         let template = DocumentTemplate::new();
         let saturated = template.saturate(&[]);
         assert!(saturated.is_ok());
+        Ok(())
+    }
+
+    #[test]
+    fn test_one_tag() -> Result<(), String> {
+        let template = DocumentTemplate::with_partials(&vec![
+            Partial::StringLiteral("Hello ".to_string()),
+            Partial::Tag("name".to_string()),
+            Partial::StringLiteral(", welcome!".to_string()),
+        ]);
+
+        let filled_document = template
+            .saturate(&vec![TagPair {
+                key: "name".to_string(),
+                value: "Joe".to_string(),
+            }])
+            .unwrap();
+
+        let expected_string = "Hello Joe, welcome!".to_string();
+
+        assert_eq!(expected_string, filled_document.document());
+
         Ok(())
     }
 }
