@@ -195,4 +195,22 @@ mod tests {
         let raw = b"{{ \t separated identifiers illegal }}";
         tag().parse(raw).unwrap();
     }
+
+    #[test]
+    fn test_document_template() -> Result<(), String> {
+        let raw = b"abc {{def}} ghi";
+        let expected_document_template =
+            DocumentTemplate::with_partials(&vec![
+                Partial::StringLiteral("abc ".to_string()),
+                Partial::Tag("def".to_string()),
+                Partial::StringLiteral(" ghi".to_string()),
+            ]);
+
+        assert_eq!(
+            expected_document_template,
+            document_template().parse(raw).unwrap()
+        );
+
+        Ok(())
+    }
 }
