@@ -6,8 +6,8 @@ A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
 
 ```
 .
-├── FHIRworks_2020 					// (intermediate web API submodule)
-└── gosh_fhirworks2020_docugen		// (this tool)
+├── FHIRworks_2020                    // (intermediate web API submodule)
+└── gosh_fhirworks2020_docugen        // (this tool)
 ```
 
 The submodule `FHIRworks_2020` contains the intermediate web API for
