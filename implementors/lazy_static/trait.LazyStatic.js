@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["docugen_bin"] = [{"text":"impl <a class=\"trait\" href=\"lazy_static/trait.LazyStatic.html\" title=\"trait lazy_static::LazyStatic\">LazyStatic</a> for <a class=\"struct\" href=\"docugen_bin/struct.CONFIG.html\" title=\"struct docugen_bin::CONFIG\">CONFIG</a>","synthetic":false,"types":["docugen_bin::CONFIG"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
