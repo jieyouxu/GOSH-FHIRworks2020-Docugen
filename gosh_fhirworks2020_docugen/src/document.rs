@@ -38,7 +38,7 @@ pub enum Partial {
 pub struct FilledDocument(String);
 
 impl FilledDocument {
-    fn document<'a>(&'a self) -> &'a str {
+    pub fn document<'a>(&'a self) -> &'a str {
         &self.0
     }
 }
@@ -59,7 +59,7 @@ pub enum TemplateError {
 }
 
 impl DocumentTemplate {
-    fn saturate(
+    pub fn saturate(
         &self,
         tag_pairs: &[TagPair],
     ) -> Result<FilledDocument, TemplateError> {

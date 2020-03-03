@@ -38,37 +38,37 @@ pub fn string_literal() -> Parser<u8, Partial> {
 ///
 /// ```enbf
 /// <Tag> ::= "{{" <TagId> "}}"
-/// <TagId> ::= [a-zA-Z][a-zA-Z0-9]*
+/// <TagId> ::= [a-zA-Z][_a-zA-Z0-9]*
 /// ```
 pub fn tag() -> Parser<u8, Partial> {
     let tag_left_delimiter = seq(b"{{").discard();
     let tag_right_delimiter = seq(b"}}").discard();
 
-    let tag_identifier = is_a(|c| alpha(c)) + is_a(|c| alphanum(c)).repeat(0..);
-
-    let tag = tag_left_delimiter * skip_whitespace() + tag_identifier
+    let tag = tag_left_delimiter * skip_whitespace() * tag_id()
         - skip_whitespace()
-        + tag_right_delimiter;
+        - tag_right_delimiter;
 
-    tag.convert(|(((), (head, tail)), ())| {
-        let (head, tail) = (
-            std::str::from_utf8(std::slice::from_ref(&head)),
-            std::str::from_utf8(&tail[..]),
-        );
-        if let (Ok(head), Ok(tail)) = (&head, &tail) {
-            let mut id = String::new();
-            id.push_str(head);
-            id.push_str(tail);
-            Ok(id)
-        } else {
-            Err(pom::Error::Custom {
-                message: "failed to parse".to_string(),
-                position: 0,
-                inner: None,
-            })
-        }
+    tag.map(|s| Partial::Tag(s))
+}
+
+fn tag_id() -> Parser<u8, String> {
+    let id = tag_id_head() + tag_id_tail();
+    id.map(|(head, tail)| {
+        let mut s = String::new();
+        s.push_str(&head);
+        s.push_str(&tail);
+        s
     })
-    .map(|s| Partial::Tag(s.to_string()))
+}
+
+fn tag_id_head() -> Parser<u8, String> {
+    let head = is_a(alpha) | sym(b'_');
+    head.map(|v| vec![v]).convert(String::from_utf8)
+}
+
+fn tag_id_tail() -> Parser<u8, String> {
+    let tail = (is_a(alphanum) | sym(b'_')).repeat(0..);
+    tail.convert(String::from_utf8)
 }
 
 fn skip_whitespace() -> Parser<u8, ()> {
@@ -82,13 +82,14 @@ pub fn partial() -> Parser<u8, Partial> {
 
 /// A `DocumentTemplate` consists of a list of `Partial`s.
 pub fn document_template() -> Parser<u8, DocumentTemplate> {
-    let partials = skip_whitespace() * partial().repeat(0..) - end();
+    let partials = partial().repeat(0..) - end();
     partials.map(|ps| DocumentTemplate::with_partials(&ps))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_ascii_string_literal() -> Result<(), String> {
@@ -175,6 +176,33 @@ mod tests {
     fn test_tag() -> Result<(), String> {
         let raw = b"{{abc}}";
         let expected_tag = Partial::Tag("abc".to_string());
+        assert_eq!(expected_tag, tag().parse(raw).unwrap());
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_tag_id_with_middle_underscore() -> Result<(), String> {
+        let raw = b"{{ a_c }}";
+        let expected_tag = Partial::Tag("a_c".to_string());
+        assert_eq!(expected_tag, tag().parse(raw).unwrap());
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_tag_id_with_starting_underscore() -> Result<(), String> {
+        let raw = b"{{ _x }}";
+        let expected_tag = Partial::Tag("_x".to_string());
+        assert_eq!(expected_tag, tag().parse(raw).unwrap());
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_tag_id_with_trailing_underscore() -> Result<(), String> {
+        let raw = b"{{ a_ }}";
+        let expected_tag = Partial::Tag("a_".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
 
         Ok(())
