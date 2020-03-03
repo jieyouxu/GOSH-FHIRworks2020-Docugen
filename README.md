@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen/branch/master/graph/badge.svg)](https://codecov.io/gh/jieyouxu/GOSH-FHIRworks2020-Docugen)
 ![GitHub language count](https://img.shields.io/github/languages/count/jieyouxu/GOSH-FHIRworks2020-Docugen)
 ![GitHub top language](https://img.shields.io/github/languages/top/jieyouxu/GOSH-FHIRworks2020-Docugen?color=orange)
+[![Build Status](https://travis-ci.com/jieyouxu/GOSH-FHIRworks2020-Docugen.svg?branch=master)](https://travis-ci.com/jieyouxu/GOSH-FHIRworks2020-Docugen)
 
 A document generation tool `Docugen` for the GOSH Drive FHIRworks API.
 
