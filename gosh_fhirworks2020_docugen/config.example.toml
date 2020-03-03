@@ -1,7 +1,6 @@
 [web_api]
 ip_address = "127.0.0.1"
 port = 5001
-api_endpoint = "/"
 use_https = true
 
 [logging]
