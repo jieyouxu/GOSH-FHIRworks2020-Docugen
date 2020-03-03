@@ -25,6 +25,10 @@ tool.
 Run the `dotnet-azure-fhir-web-api` and bind it to `https://localhost:5001` so
 the front-end tooling can utilize this intermediate endpoint.
 
+## Documentation
+
+Deployed at [docugen](https://jieyouxu.github.io/GOSH-FHIRworks2020-Docugen/docugen/index.html).
+
 ## Configuration
 
 To configure the tooling, copy the example `config.example.toml` configuration
