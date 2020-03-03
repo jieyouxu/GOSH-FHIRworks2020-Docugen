@@ -13,13 +13,9 @@ matrix:
 before_install:
   - cd gosh_fhirworks2020_docugen
 
-before_script:
-  - pip install 'travis-cargo<0.2' --user && export PATH=$HOME/.local/bin:$PATH
-
 script:
   - cargo build --verbose --all
   - cargo test --verbose --all
-  - travis-cargo build && travis-cargo test && travis-cargo --only beta doc
 
 addons:
   apt:
@@ -45,9 +41,4 @@ after_success: |
   rm -rf kcov-master &&
   for file in target/debug/gosh_fhirworks2020_docugen-*; do [ -x "${file}" ] || continue; mkdir -p "target/cov/$(basename $file)"; ./kcov-build/usr/local/bin/kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
   bash <(curl -s https://codecov.io/bash) &&
-  echo "Uploaded code coverage" &&
-  travis-cargo --only beta doc-upload
-
-env:
-  global:
-    - TRAVIS_CARGO_NIGHTLY_FEATURE=""
+  echo "Uploaded code coverage"
