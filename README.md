@@ -23,7 +23,9 @@ interpolation between the backend FHIRworks API and the front-end `Docugen`
 tool.
 
 Run the `dotnet-azure-fhir-web-api` and bind it to `https://localhost:5001` so
-the front-end tooling can utilize this intermediate endpoint.
+the front-end tooling can utilize this intermediate endpoint. If alternative
+address / port is required, see the configuration section to let `docugen`
+know.
 
 ## Documentation
 
