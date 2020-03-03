@@ -28,13 +28,6 @@ impl Default for DocugenConfig {
 pub struct WebApiConfig {
     pub ip_address: IpAddr,
     pub port: u16,
-    /// The part of the url after `{ip_address}:{port}`.
-    ///
-    /// # Example
-    ///
-    /// The `api_endpoint` of `https://localhost:5001/api/Patient` is
-    /// `/api/Patient`.
-    pub api_endpoint: String,
     pub use_https: bool,
 }
 
@@ -43,7 +36,6 @@ impl Default for WebApiConfig {
         Self {
             ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
             port: 5001,
-            api_endpoint: "/".to_string(),
             use_https: true,
         }
     }
@@ -187,14 +179,12 @@ mod tests {
         let raw_web_api_config = r#"
             ip_address = "127.0.0.1"
             port = 5001
-            api_endpoint = "/"
             use_https = true
         "#;
 
         let expected_web_api_config = WebApiConfig {
             ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
             port: 5001,
-            api_endpoint: "/".to_string(),
             use_https: true,
         };
 
@@ -212,7 +202,6 @@ mod tests {
         let web_api_config = WebApiConfig {
             ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
             port: 5001,
-            api_endpoint: "/".to_string(),
             use_https: true,
         };
 
@@ -222,7 +211,6 @@ mod tests {
         let expected_str = r#"
             ip_address = "127.0.0.1"
             port = 5001
-            api_endpoint = "/"
             use_https = true
         "#;
 
@@ -245,7 +233,6 @@ mod tests {
             [web_api]
             ip_address = "127.0.0.1"
             port = 5001
-            api_endpoint = "/"
             use_https = true
 
             [logging]
@@ -256,7 +243,6 @@ mod tests {
             web_api: WebApiConfig {
                 ip_address: IpAddr::V4(Ipv4Addr::LOCALHOST),
                 port: 5001,
-                api_endpoint: "/".to_string(),
                 use_https: true,
             },
             logging: LoggingConfig {
