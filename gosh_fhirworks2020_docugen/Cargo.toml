@@ -1,10 +1,20 @@
 [package]
 name = "gosh_fhirworks2020_docugen"
+description = "A document generator for GOSH Drive FHIRworks2020 Hackathon"
+homepage = "https://github.com/jieyouxu/GOSH-FHIRworks2020-Docugen"
+repository = "https://github.com/jieyouxu/GOSH-FHIRworks2020-Docugen"
+license = "MIT"
 version = "0.1.0"
+keywords = ["report-generator", "document-generator", "template"]
+categories = ["template-engine", "value-formatting"]
 authors = ["许杰友 Jieyou Xu (Joe) <jieyouxu@outlook.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[badges]
+travis-ci = { repository = "jieyouxu/GOSH-FHIRworks2020-Docugen", branch = "master" }
+codecov = { repository = "jieyouxu/GOSH-FHIRworks2020-Docugen", branch = "master" }
+maintenance = { status = "passively-maintained" }
+
 [lib]
 name = "docugen"
 path = "src/lib.rs"
@@ -20,9 +30,7 @@ serde = { version = "1.0.104", features = ["derive"] }
 serde_json = "1.0.48"
 log = "0.4.8"
 env_logger = "0.7.1"
-reqwest = "0.10.3"
 pom = "3.1.0"
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
-tempfile = "3.1.0"
