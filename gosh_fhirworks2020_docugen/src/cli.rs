@@ -33,7 +33,7 @@ pub fn cli<'a, 'b>() -> App<'a, 'b> {
 
     App::new("FHIRworks2020 docugen")
             .version("0.1.0")
-            .author("Jieyou Xu <jieyou.xu.18@ucl.ac.uk>")
+            .author("Jieyou Xu (Joe) <jieyou.xu.18@ucl.ac.uk>")
             .about("Small CLI tool to fetch data from a FHIR API endpoint and fill out a document template.")
             .setting(AppSettings::ColoredHelp)
             .arg(&config_arg)
