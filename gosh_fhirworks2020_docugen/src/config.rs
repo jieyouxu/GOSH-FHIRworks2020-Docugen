@@ -74,9 +74,12 @@ pub enum LogLevel {
     Off,
 }
 
+/// Potential errors that can be encountered relating to configuration.
 #[derive(Debug, PartialEq)]
 pub enum ConfigError {
+    /// Some sort of IOError occured.
     IOError(String),
+    /// The configuration provided is illformed.
     IllFormed(String),
 }
 
