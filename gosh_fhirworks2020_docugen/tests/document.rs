@@ -1,5 +1,5 @@
-use docugen::document::TagPair;
-use docugen::parser::document_template;
+use docugen::core::document::TagPair;
+use docugen::core::parser::document_template;
 use log::debug;
 
 #[test]

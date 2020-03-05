@@ -1,3 +1,1 @@
-pub mod config;
-pub mod document;
-pub mod parser;
+pub mod core;
