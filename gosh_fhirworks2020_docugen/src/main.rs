@@ -1,4 +1,5 @@
 pub mod config;
+pub mod data;
 
 use config::DocugenConfig;
 use lazy_static::lazy_static;

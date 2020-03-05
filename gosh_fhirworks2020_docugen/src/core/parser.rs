@@ -30,7 +30,7 @@ pub fn string_literal() -> Parser<u8, Partial> {
     let string = (none_of(b"\\}{") | escape_sequence).repeat(1..);
     string
         .convert(String::from_utf8)
-        .map(|s| Partial::StringLiteral(s))
+        .map(Partial::StringLiteral)
 }
 
 /// The `tag` parser combinator is responsible for parsing a `Tag(identifier)`
@@ -48,7 +48,7 @@ pub fn tag() -> Parser<u8, Partial> {
         - skip_whitespace()
         - tag_right_delimiter;
 
-    tag.map(|s| Partial::Tag(s))
+    tag.map(Partial::Tag)
 }
 
 fn tag_id() -> Parser<u8, String> {

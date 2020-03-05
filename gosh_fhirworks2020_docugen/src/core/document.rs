@@ -7,9 +7,7 @@ pub struct DocumentTemplate {
 
 impl DocumentTemplate {
     pub fn new() -> Self {
-        Self {
-            partials: Vec::new(),
-        }
+        DocumentTemplate::default()
     }
 
     pub fn with_partials(partials: &[Partial]) -> Self {
@@ -20,6 +18,14 @@ impl DocumentTemplate {
 
     pub fn add_partial(&mut self, partial: &Partial) {
         self.partials.push(partial.clone());
+    }
+}
+
+impl Default for DocumentTemplate {
+    fn default() -> Self {
+        Self {
+            partials: Vec::new(),
+        }
     }
 }
 
@@ -38,7 +44,7 @@ pub enum Partial {
 pub struct FilledDocument(String);
 
 impl FilledDocument {
-    pub fn document<'a>(&'a self) -> &'a str {
+    pub fn document(&self) -> &str {
         &self.0
     }
 }
@@ -87,7 +93,7 @@ fn saturate_or_error<'a>(
     tag_pairs: &'a [TagPair],
     tag_key: &'a str,
 ) -> Result<&'a str, TemplateError> {
-    match tag_pairs.iter().find(|&t| &t.key == tag_key) {
+    match tag_pairs.iter().find(|t| t.key == tag_key) {
         Some(TagPair { value, .. }) => Ok(value),
         None => {
             Err(TemplateError::MissingRequiredTagValue(tag_key.to_string()))
