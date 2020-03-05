@@ -1,6 +1,5 @@
 use pom::char_class::*;
 use pom::parser::*;
-use pom::Parser;
 
 use super::document::{DocumentTemplate, Partial};
 
@@ -22,7 +21,7 @@ use super::document::{DocumentTemplate, Partial};
 ///
 /// <UnescapedCharacter> ::= [^\\{}]
 /// ```
-pub fn string_literal() -> Parser<u8, Partial> {
+pub fn string_literal<'a>() -> Parser<'a, u8, Partial> {
     let special_char = sym(b'\\').map(|_| b'\\')
         | sym(b'{').map(|_| b'{')
         | sym(b'}').map(|_| b'}');
@@ -40,7 +39,7 @@ pub fn string_literal() -> Parser<u8, Partial> {
 /// <Tag> ::= "{{" <TagId> "}}"
 /// <TagId> ::= [a-zA-Z][_a-zA-Z0-9]*
 /// ```
-pub fn tag() -> Parser<u8, Partial> {
+pub fn tag<'a>() -> Parser<'a, u8, Partial> {
     let tag_left_delimiter = seq(b"{{").discard();
     let tag_right_delimiter = seq(b"}}").discard();
 
@@ -51,7 +50,7 @@ pub fn tag() -> Parser<u8, Partial> {
     tag.map(Partial::Tag)
 }
 
-fn tag_id() -> Parser<u8, String> {
+fn tag_id<'a>() -> Parser<'a, u8, String> {
     let id = tag_id_head() + tag_id_tail();
     id.map(|(head, tail)| {
         let mut s = String::new();
@@ -61,27 +60,27 @@ fn tag_id() -> Parser<u8, String> {
     })
 }
 
-fn tag_id_head() -> Parser<u8, String> {
+fn tag_id_head<'a>() -> Parser<'a, u8, String> {
     let head = is_a(alpha) | sym(b'_');
     head.map(|v| vec![v]).convert(String::from_utf8)
 }
 
-fn tag_id_tail() -> Parser<u8, String> {
+fn tag_id_tail<'a>() -> Parser<'a, u8, String> {
     let tail = (is_a(alphanum) | sym(b'_')).repeat(0..);
     tail.convert(String::from_utf8)
 }
 
-fn skip_whitespace() -> Parser<u8, ()> {
+fn skip_whitespace<'a>() -> Parser<'a, u8, ()> {
     one_of(b" \t\r\n").repeat(0..).discard()
 }
 
 /// A `Partial` is either a `StringLiteral` or a `Tag`.
-pub fn partial() -> Parser<u8, Partial> {
+pub fn partial<'a>() -> Parser<'a, u8, Partial> {
     string_literal() | tag()
 }
 
 /// A `DocumentTemplate` consists of a list of `Partial`s.
-pub fn document_template() -> Parser<u8, DocumentTemplate> {
+pub fn document_template<'a>() -> Parser<'a, u8, DocumentTemplate> {
     let partials = partial().repeat(0..) - end();
     partials.map(|ps| DocumentTemplate::with_partials(&ps))
 }
