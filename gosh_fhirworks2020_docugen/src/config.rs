@@ -1,9 +1,5 @@
-use log::{error, info};
 use serde::{Deserialize, Serialize};
-use std::fs;
 use std::net::{IpAddr, Ipv4Addr};
-use std::path;
-use toml;
 
 /// Configuration for the `Docugen` tool.
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -77,57 +73,8 @@ pub enum LogLevel {
 /// Potential errors that can be encountered relating to configuration.
 #[derive(Debug, PartialEq)]
 pub enum ConfigError {
-    /// Some sort of IOError occured.
-    IOError(String),
     /// The configuration provided is illformed.
     IllFormed(String),
-}
-
-/// A type alias over possible `ConfigError`s that can be produced when trying
-/// to read or parse a configuration file into the `DocugenConfig` struct.
-pub type ConfigResult<T> = Result<T, ConfigError>;
-
-/// Attempt to read configuration from a file of the given `path`.
-pub fn read_config_from_path(path: &str) -> ConfigResult<DocugenConfig> {
-    info!("Trying to read configuration from path: \"{}\"", path);
-    let path = path::Path::new(path);
-
-    // We require that the configuration file exists at the provided `path`.
-    // This will trigger a panic if the configuration file does not exist as it
-    // is likely a programmer mistake.
-    assert!(
-        path.exists(),
-        "Configuration file at path \"{:?}\" does not exist!",
-        &path
-    );
-
-    let raw_config = read_from_file(&path)?;
-    let config = parse_as_toml(&raw_config)?;
-
-    info!("Config successfully parsed as TOML");
-    info!("{:#?}", &config);
-
-    Ok(config)
-}
-
-fn read_from_file(path: &path::Path) -> ConfigResult<String> {
-    let config_content = fs::read_to_string(path)
-        .map_err(|e| ConfigError::IOError(e.to_string()))?;
-
-    info!("Config read:");
-    info!("{:#?}", config_content);
-
-    Ok(config_content)
-}
-
-fn parse_as_toml(raw: &str) -> ConfigResult<DocugenConfig> {
-    toml::from_str::<DocugenConfig>(raw).map_err(|e| {
-        error!("Failed to parse config as TOML. Check your configuration!");
-        error!("Provided raw config:");
-        error!("\n{}", raw);
-        error!("Error cause: {:#?}", &e);
-        ConfigError::IllFormed(e.to_string())
-    })
 }
 
 #[cfg(test)]

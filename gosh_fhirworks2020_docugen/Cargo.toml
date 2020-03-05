@@ -29,8 +29,9 @@ toml = "0.5.6"
 serde = { version = "1.0.104", features = ["derive"] }
 serde_json = "1.0.48"
 log = "0.4.8"
-env_logger = "0.7.1"
 pom = "3.1.0"
+clap = { version = "2.33.0", features = ["color"] }
+pretty_env_logger = "0.4.0"
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
