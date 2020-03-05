@@ -92,7 +92,7 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_ascii_string_literal() -> Result<(), String> {
+    fn test_ascii_string_literal() {
         let raw = b"HELLO_WORLD";
         let expected_string_literal =
             Partial::StringLiteral("HELLO_WORLD".to_string());
@@ -101,8 +101,6 @@ mod tests {
             expected_string_literal,
             string_literal().parse(raw).unwrap()
         );
-
-        Ok(())
     }
 
     #[test]
@@ -113,7 +111,7 @@ mod tests {
     }
 
     #[test]
-    fn test_escaped_left_brace() -> Result<(), String> {
+    fn test_escaped_left_brace() {
         let raw = b"\\{";
         let expected_string_literal = Partial::StringLiteral("{".to_string());
 
@@ -121,8 +119,6 @@ mod tests {
             expected_string_literal,
             string_literal().parse(raw).unwrap()
         );
-
-        Ok(())
     }
 
     #[test]
@@ -133,7 +129,7 @@ mod tests {
     }
 
     #[test]
-    fn test_escaped_right_brace() -> Result<(), String> {
+    fn test_escaped_right_brace() {
         let raw = b"\\}";
         let expected_string_literal = Partial::StringLiteral("}".to_string());
 
@@ -141,8 +137,6 @@ mod tests {
             expected_string_literal,
             string_literal().parse(raw).unwrap()
         );
-
-        Ok(())
     }
 
     #[test]
@@ -153,7 +147,7 @@ mod tests {
     }
 
     #[test]
-    fn test_escaped_backslash() -> Result<(), String> {
+    fn test_escaped_backslash() {
         let raw = b"\\\\";
         let expected_string_literal = Partial::StringLiteral("\\".to_string());
 
@@ -161,8 +155,6 @@ mod tests {
             expected_string_literal,
             string_literal().parse(raw).unwrap()
         );
-
-        Ok(())
     }
 
     #[test]
@@ -173,48 +165,38 @@ mod tests {
     }
 
     #[test]
-    fn test_tag() -> Result<(), String> {
+    fn test_tag() {
         let raw = b"{{abc}}";
         let expected_tag = Partial::Tag("abc".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
-
-        Ok(())
     }
 
     #[test]
-    fn test_tag_id_with_middle_underscore() -> Result<(), String> {
+    fn test_tag_id_with_middle_underscore() {
         let raw = b"{{ a_c }}";
         let expected_tag = Partial::Tag("a_c".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
-
-        Ok(())
     }
 
     #[test]
-    fn test_tag_id_with_starting_underscore() -> Result<(), String> {
+    fn test_tag_id_with_starting_underscore() {
         let raw = b"{{ _x }}";
         let expected_tag = Partial::Tag("_x".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
-
-        Ok(())
     }
 
     #[test]
-    fn test_tag_id_with_trailing_underscore() -> Result<(), String> {
+    fn test_tag_id_with_trailing_underscore() {
         let raw = b"{{ a_ }}";
         let expected_tag = Partial::Tag("a_".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
-
-        Ok(())
     }
 
     #[test]
-    fn test_tag_whitespace() -> Result<(), String> {
+    fn test_tag_whitespace() {
         let raw = b"{{ \t xxxx   }}";
         let expected_tag = Partial::Tag("xxxx".to_string());
         assert_eq!(expected_tag, tag().parse(raw).unwrap());
-
-        Ok(())
     }
 
     #[test]
@@ -225,7 +207,7 @@ mod tests {
     }
 
     #[test]
-    fn test_document_template() -> Result<(), String> {
+    fn test_document_template() {
         let raw = b"abc {{def}} ghi";
         let expected_document_template =
             DocumentTemplate::with_partials(&vec![
@@ -238,7 +220,5 @@ mod tests {
             expected_document_template,
             document_template().parse(raw).unwrap()
         );
-
-        Ok(())
     }
 }

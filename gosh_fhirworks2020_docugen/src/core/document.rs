@@ -106,15 +106,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_no_tags() -> Result<(), String> {
+    fn test_no_tags() {
         let template = DocumentTemplate::new();
         let saturated = template.saturate(&[]);
         assert!(saturated.is_ok());
-        Ok(())
     }
 
     #[test]
-    fn test_one_tag() -> Result<(), String> {
+    fn test_one_tag() {
         let template = DocumentTemplate::with_partials(&vec![
             Partial::StringLiteral("Hello ".to_string()),
             Partial::Tag("name".to_string()),
@@ -131,8 +130,6 @@ mod tests {
         let expected_string = "Hello Joe, welcome!".to_string();
 
         assert_eq!(expected_string, filled_document.document());
-
-        Ok(())
     }
 
     #[test]
@@ -151,7 +148,7 @@ mod tests {
     }
 
     #[test]
-    fn test_multiple_tags() -> Result<(), String> {
+    fn test_multiple_tags() {
         let template = DocumentTemplate::with_partials(&vec![
             Partial::StringLiteral("<S1>".to_string()),
             Partial::Tag("T1".to_string()),
@@ -181,7 +178,5 @@ mod tests {
         let expected_string = "<S1>T1V<S2>T2VT1VT3V".to_string();
 
         assert_eq!(expected_string, filled_document.document());
-
-        Ok(())
     }
 }
