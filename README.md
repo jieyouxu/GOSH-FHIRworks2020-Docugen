@@ -26,6 +26,40 @@ the front-end tooling can utilize this intermediate endpoint. If alternative
 address / port is required, see the configuration section to let `docugen`
 know.
 
+## Building and Running
+
+- The project is written in [rust](https://github.com/rust-lang/rust).
+- The build tool is [cargo](https://github.com/rust-lang/cargo/).
+
+The following commands assume you are in the `gosh_fhirworks2020_docugen`
+directory.
+
+### Development Build
+
+```
+cargo build
+```
+
+To run the binary directly, run
+
+```
+cargo run
+```
+
+To see what options are available, run
+
+```
+cargo run -- --help
+```
+
+### Production/Release Build
+
+Default optimization level is `-O3`.
+
+```
+cargo build --release
+```
+
 ## Documentation
 
 Deployed at [docugen](https://jieyouxu.github.io/GOSH-FHIRworks2020-Docugen/docugen/index.html).
