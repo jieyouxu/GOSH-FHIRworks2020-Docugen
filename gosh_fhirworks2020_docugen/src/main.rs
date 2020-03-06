@@ -38,6 +38,22 @@ async fn main() {
         }
     };
 
+    std::env::set_var("RUST_LOG", "info");
+    std::env::set_var("LOG", "info");
+
+    if let Some(verbosity) = matches.value_of("v") {
+        if let Ok(verbosity) = verbosity.parse::<u32>() {
+            match verbosity {
+                0 => std::env::set_var("LOG", "info"),
+                1 => std::env::set_var("LOG", "debug"),
+                2 => std::env::set_var("LOG", "trace"),
+                _ => std::env::set_var("LOG", "info"),
+            };
+
+            std::env::set_var("RUST_LOG", std::env::var("LOG").unwrap());
+        }
+    }
+
     let endpoint = matches
         .value_of("ENDPOINT")
         .expect("<ENDPOINT> is required");
