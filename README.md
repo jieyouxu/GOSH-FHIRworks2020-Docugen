@@ -52,6 +52,27 @@ To see what options are available, run
 cargo run -- --help
 ```
 
+```
+FHIRworks2020 docugen 0.1.0
+Small CLI tool to fetch data from a FHIR API endpoint and fill out a document template.
+
+USAGE:
+    docugen_bin [FLAGS] [OPTIONS] <ENDPOINT> <TEMPLATE>
+
+FLAGS:
+    -h, --help       Prints help information
+    -v               Sets the level of logging verbosity.
+    -V, --version    Prints version information
+
+OPTIONS:
+    -c, --config <FILE>    Sets config from custom file.
+
+ARGS:
+    <ENDPOINT>    Select the endpoint to use, e.g. `/api/Patient`. Configure the IP address and port in the
+                  configuration file.
+    <TEMPLATE>    Select the template to fill the data fetched from the endpoint.
+```
+
 ### Production/Release Build
 
 Default optimization level is `-O3`.
