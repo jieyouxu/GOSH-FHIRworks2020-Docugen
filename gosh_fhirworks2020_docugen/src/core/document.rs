@@ -114,14 +114,14 @@ mod tests {
 
     #[test]
     fn test_one_tag() {
-        let template = DocumentTemplate::with_partials(&vec![
+        let template = DocumentTemplate::with_partials(&[
             Partial::StringLiteral("Hello ".to_string()),
             Partial::Tag("name".to_string()),
             Partial::StringLiteral(", welcome!".to_string()),
         ]);
 
         let filled_document = template
-            .saturate(&vec![TagPair {
+            .saturate(&[TagPair {
                 key: "name".to_string(),
                 value: "Joe".to_string(),
             }])
@@ -135,12 +135,12 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_non_existent_tag() {
-        let template = DocumentTemplate::with_partials(&vec![Partial::Tag(
+        let template = DocumentTemplate::with_partials(&[Partial::Tag(
             "name".to_string(),
         )]);
 
         template
-            .saturate(&vec![TagPair {
+            .saturate(&[TagPair {
                 key: "Hello".to_string(),
                 value: "___".to_string(),
             }])
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn test_multiple_tags() {
-        let template = DocumentTemplate::with_partials(&vec![
+        let template = DocumentTemplate::with_partials(&[
             Partial::StringLiteral("<S1>".to_string()),
             Partial::Tag("T1".to_string()),
             Partial::StringLiteral("<S2>".to_string()),
@@ -159,7 +159,7 @@ mod tests {
         ]);
 
         let filled_document = template
-            .saturate(&vec![
+            .saturate(&[
                 TagPair {
                     key: "T1".to_string(),
                     value: "T1V".to_string(),

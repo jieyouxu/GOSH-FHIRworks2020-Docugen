@@ -165,7 +165,7 @@ mod tests {
         "#;
 
         let expected_str = expected_str
-            .split("\n")
+            .split('\n')
             .skip(1) // skip newline after raw string literal start
             .map(|s| s.trim())
             .map(|s| s.to_string())

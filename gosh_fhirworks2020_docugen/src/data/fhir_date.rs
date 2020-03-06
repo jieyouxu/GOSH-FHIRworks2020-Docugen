@@ -156,7 +156,7 @@ mod tests {
     #[test]
     fn test_serialize_year() {
         let s = serialize_fhirdate(&FHIRDate {
-            year: 0001,
+            year: 1,
             month: None,
             day: None,
         });
@@ -167,7 +167,7 @@ mod tests {
     #[test]
     fn test_serialize_year_month() {
         let s = serialize_fhirdate(&FHIRDate {
-            year: 0001,
+            year: 1,
             month: Some(1),
             day: None,
         });
@@ -178,7 +178,7 @@ mod tests {
     #[test]
     fn test_serialize_full_date() {
         let s = serialize_fhirdate(&FHIRDate {
-            year: 0001,
+            year: 1,
             month: Some(1),
             day: Some(1),
         });

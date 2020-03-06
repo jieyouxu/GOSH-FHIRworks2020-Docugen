@@ -209,7 +209,7 @@ mod tests {
     fn test_document_template() {
         let raw = b"abc {{def}} ghi";
         let expected_document_template =
-            DocumentTemplate::with_partials(&vec![
+            DocumentTemplate::with_partials(&[
                 Partial::StringLiteral("abc ".to_string()),
                 Partial::Tag("def".to_string()),
                 Partial::StringLiteral(" ghi".to_string()),

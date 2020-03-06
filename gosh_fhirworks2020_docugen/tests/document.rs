@@ -17,7 +17,7 @@ Sincerely,
 "#;
 
     let template = document_template().parse(raw.as_bytes()).unwrap();
-    let tag_pairs: &[TagPair] = &vec![
+    let tag_pairs: &[TagPair] = &[
         TagPair {
             key: "receiver_name".to_string(),
             value: "Moon Moon".to_string(),
