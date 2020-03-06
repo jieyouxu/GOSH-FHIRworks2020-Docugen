@@ -86,4 +86,3 @@ mod tests {
         assert!(serde_json::from_str::<Vec<Bundle>>(raw).is_ok());
     }
 }
-

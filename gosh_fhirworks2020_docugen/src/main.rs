@@ -65,7 +65,7 @@ async fn main() {
 
     for patient in &patients[..] {
         // We require that each `Patient` has at least one full name.
-        assert!(patient.names.len() >= 1);
+        assert!(!patient.names.is_empty());
 
         let full_name = &patient.names[0];
         let full_name =
@@ -117,7 +117,7 @@ pub fn read_config_from_path(path: &str) -> Result<DocugenConfig, String> {
     Ok(config)
 }
 
-fn read_from_file<'a>(path: &'a path::Path) -> std::io::Result<String> {
+fn read_from_file(path: &path::Path) -> std::io::Result<String> {
     let content = fs::read_to_string(path)?;
 
     info!("File read:");
