@@ -32,6 +32,8 @@ log = "0.4.8"
 pom = "3.1.0"
 clap = { version = "2.33.0", features = ["color"] }
 pretty_env_logger = "0.4.0"
+reqwest = { version = "0.10.4", features = ["json"] }
+tokio = { version = "0.2.13", features = ["full"] }
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"

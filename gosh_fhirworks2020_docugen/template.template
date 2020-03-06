@@ -1,0 +1,10 @@
+Dear {{ name }},
+
+Upon your request, this is your recorded birthdate stored in our repository:
+
+Name:		{{ name }}
+Birthdate:	{{ birth_date }}
+
+Sincerely,
+
+The Hospital

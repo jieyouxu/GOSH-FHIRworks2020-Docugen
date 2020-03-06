@@ -11,9 +11,9 @@ use serde::Deserialize;
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Patient {
     #[serde(rename = "name")]
-    names: Vec<HumanName>,
-    #[serde(rename = "camelCase")]
-    birth_date: FHIRDate,
+    pub names: Vec<HumanName>,
+    #[serde(rename = "birthDate")]
+    pub birth_date: FHIRDate,
 }
 
 /// Each `Patient` has one or more `HumanName`s. A `HumanName` contains more
@@ -25,6 +25,6 @@ pub struct Patient {
 /// - [Human Name](https://www.hl7.org/fhir/datatypes.html#HumanName).
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct HumanName {
-    family: String,
-    given: String,
+    pub family: String,
+    pub given: Vec<String>,
 }
