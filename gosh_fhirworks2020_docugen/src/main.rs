@@ -83,9 +83,16 @@ async fn main() {
         // We require that each `Patient` has at least one full name.
         assert!(!patient.names.is_empty());
 
-        let full_name = &patient.names[0];
-        let full_name =
-            format!("{} {}", &full_name.given.join(" "), &full_name.family);
+        let full_name = patient.names[0].clone();
+
+        let given = full_name.given.join(" ");
+        let family = match full_name.family {
+            Some(f) => f,
+            None => "".to_string(),
+        };
+
+        let full_name = format!("{} {}", given, family);
+
         let birth_date = patient.birth_date.to_string();
         let name_tag = TagPair {
             key: "name".to_string(),

@@ -25,6 +25,6 @@ pub struct Patient {
 /// - [Human Name](https://www.hl7.org/fhir/datatypes.html#HumanName).
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct HumanName {
-    pub family: String,
+    pub family: Option<String>,
     pub given: Vec<String>,
 }
