@@ -94,3 +94,28 @@ file.
 cd gosh_fhirworks2020_docugen
 cp config.example.toml config.toml
 ```
+
+## References
+
+Third-party libraries used:
+
+```
+[dependencies]
+lazy_static = "1.4.0"
+toml = "0.5.6"
+serde = { version = "1.0.104", features = ["derive"] }
+serde_json = "1.0.48"
+log = "0.4.8"
+pom = "3.1.0"
+clap = { version = "2.33.0", features = ["color"] }
+pretty_env_logger = "0.4.0"
+reqwest = { version = "0.10.4", features = ["json"] }
+tokio = { version = "0.2.13", features = ["full"] }
+
+[dev-dependencies]
+pretty_assertions = "0.6.1"
+```
+
+See `gosh_fhirworks2020_docugen/Cargo.toml` for exact external crate names,
+versions and enabled features.
+
